@@ -2,7 +2,7 @@ import { TrendsResponse } from "../types/api.types"
 
 export async function fetchTrends(): Promise<TrendsResponse> {
   try {
-    const response = await fetch("http://localhost:3002/trends")
+    const response = await fetch("https://scams-backend.vercel.app/trends")
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`)
     }

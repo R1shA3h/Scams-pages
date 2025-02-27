@@ -73,7 +73,7 @@ export function ScamTypesPieChart() {
       <CardHeader>
         <CardTitle className="text-2xl">Types of Scams</CardTitle>
         <p className="text-m text-gray-500">
-         {data.month} {data.year} Total: {data.total} cases
+         Monthly Total: {data.total} cases
         </p>
       </CardHeader>
       <CardContent>

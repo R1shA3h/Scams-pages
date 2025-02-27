@@ -22,20 +22,17 @@ export function DatePickerWithRange({ className }: React.HTMLAttributes<HTMLDivE
     setDate(newDate)
     setError(null)
     
-    // If both dates are selected, close the calendar and fetch data
     if (newDate?.from && newDate?.to) {
-      setIsCalendarOpen(false) // Close the calendar
+      setIsCalendarOpen(false)
       try {
         const startDate = format(newDate.from, "yyyy-MM-dd")
         const endDate = format(newDate.to, "yyyy-MM-dd")
         const data = await fetchDateRange(startDate, endDate)
         
-        // Validate the response data
         if (!data || typeof data !== 'object') {
           throw new Error('Invalid response data format')
         }
 
-        // Ensure the data has the required properties
         const validatedData: DateRangeResponse = {
           totalScams: data.totalScams || 0,
           totalAmount: data.totalAmount || 0,
@@ -54,7 +51,7 @@ export function DatePickerWithRange({ className }: React.HTMLAttributes<HTMLDivE
   }
 
   return (
-    <>
+    <div className="w-full max-w-sm mx-auto">
       <div className={cn("grid gap-2", className)}>
         <Popover open={isCalendarOpen} onOpenChange={setIsCalendarOpen}>
           <PopoverTrigger asChild>
@@ -64,10 +61,11 @@ export function DatePickerWithRange({ className }: React.HTMLAttributes<HTMLDivE
               className={cn(
                 "w-full justify-start text-left font-normal",
                 !date && "text-muted-foreground",
-                "bg-white text-gray-900 hover:bg-gray-100",
+                "bg-white hover:bg-gray-50 text-gray-700 border-gray-200 shadow-sm",
+                "transition-all duration-200"
               )}
             >
-              <CalendarIcon className="mr-2 h-4 w-4" />
+              <CalendarIcon className="mr-2 h-4 w-4 text-gray-500" />
               {date?.from ? (
                 date.to ? (
                   <>
@@ -77,11 +75,23 @@ export function DatePickerWithRange({ className }: React.HTMLAttributes<HTMLDivE
                   format(date.from, "LLL dd, y")
                 )
               ) : (
-                <span>Enter the date range</span>
+                <span>Select date range</span>
               )}
             </Button>
           </PopoverTrigger>
-          <PopoverContent className="w-auto p-0" align="start">
+          <PopoverContent 
+            className="w-auto p-0 bg-white shadow-xl rounded-xl border-gray-100" 
+            align="center"
+          >
+            <Calendar
+              initialFocus
+              mode="range"
+              defaultMonth={new Date()}
+              selected={date}
+              onSelect={handleDateChange}
+              numberOfMonths={1}
+              className="bg-white rounded-lg sm:hidden"
+            />
             <Calendar
               initialFocus
               mode="range"
@@ -89,15 +99,15 @@ export function DatePickerWithRange({ className }: React.HTMLAttributes<HTMLDivE
               selected={date}
               onSelect={handleDateChange}
               numberOfMonths={2}
-              className="bg-white"
+              className="bg-white rounded-lg hidden sm:block"
             />
           </PopoverContent>
         </Popover>
       </div>
 
       {error && (
-        <div className="mt-4 p-4 bg-red-50 text-red-800 rounded-md">
-          {error}
+        <div className="mt-4 p-4 bg-red-50 text-red-800 rounded-xl border border-red-100 shadow-sm">
+          <p className="text-sm font-medium">{error}</p>
         </div>
       )}
 
@@ -107,7 +117,7 @@ export function DatePickerWithRange({ className }: React.HTMLAttributes<HTMLDivE
           onClose={() => setAlertData(null)} 
         />
       )}
-    </>
+    </div>
   )
 }
 

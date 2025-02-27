@@ -1,16 +1,36 @@
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { CircleMarker, Tooltip, GeoJSON, TileLayer } from 'react-leaflet';
 import dynamic from 'next/dynamic';
 import { GeoDistributionItem } from '@/lib/types/api.types';
 import indiaGeoJson from './india.json';
 import type { GeoJsonObject } from 'geojson';
 import 'leaflet/dist/leaflet.css';
 
-// Dynamically import the map component to avoid SSR issues
-const Map = dynamic(() => import('react-leaflet').then((mod) => mod.MapContainer), {
-  ssr: false,
-});
+// Instead, dynamically import the Map component with SSR disabled
+const MapContainer = dynamic(
+  () => import('react-leaflet').then((mod) => mod.MapContainer),
+  { ssr: false }
+);
+
+const CircleMarker = dynamic(
+  () => import('react-leaflet').then((mod) => mod.CircleMarker),
+  { ssr: false }
+);
+
+const Tooltip = dynamic(
+  () => import('react-leaflet').then((mod) => mod.Tooltip),
+  { ssr: false }
+);
+
+const GeoJSON = dynamic(
+  () => import('react-leaflet').then((mod) => mod.GeoJSON),
+  { ssr: false }
+);
+
+const TileLayer = dynamic(
+  () => import('react-leaflet').then((mod) => mod.TileLayer),
+  { ssr: false }
+);
 
 // City coordinates (latitude, longitude)
 const cityCoordinates: { [key: string]: [number, number] } = {
@@ -87,14 +107,14 @@ export function IndiaHeatmap({ data }: Props) {
       <CardHeader className="border-b border-gray-800">
         <CardTitle className="text-gray-100">Scam Distribution Across India</CardTitle>
         {selectedMarker && (
-          <div className="text-sm text-gray-400">
-            Selected: {selectedMarker.location}
+          <div className="text-xs text-gray-400">
+            {/* Selected: {selectedMarker.location} */}
           </div>
         )}
       </CardHeader>
       <CardContent className="p-0">
         <div className="h-[650px]">
-          <Map
+          <MapContainer
             center={[20.5937, 78.9629]}
             zoom={5}
             style={{ height: "100%", width: "100%", background: "#0a0f1a" }}
@@ -113,7 +133,7 @@ export function IndiaHeatmap({ data }: Props) {
                 weight: 1.5,
                 opacity: 0.8,
                 color: '#2a3a50',
-                fillOpacity: 0.7
+                fillOpacity: 0.1
               }}
             />
 
@@ -122,7 +142,7 @@ export function IndiaHeatmap({ data }: Props) {
                 key={index}
                 center={marker.coordinates}
                 radius={marker.radius}
-                fillColor="#ff4444"
+                fillColor="#f44444"
                 color="#ffffff"
                 weight={1}
                 fillOpacity={marker.fillOpacity}
@@ -148,7 +168,7 @@ export function IndiaHeatmap({ data }: Props) {
                 </Tooltip>
               </CircleMarker>
             ))}
-          </Map>
+          </MapContainer>
         </div>
       </CardContent>
     </Card>

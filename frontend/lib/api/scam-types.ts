@@ -2,7 +2,7 @@ import { ScamTypesResponse } from "../types/api.types";
 
 export async function fetchScamTypes(): Promise<ScamTypesResponse> {
   try {
-    const response = await fetch("http://localhost:3002/types");
+    const response = await fetch("https://scams-backend.vercel.app/types");
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }

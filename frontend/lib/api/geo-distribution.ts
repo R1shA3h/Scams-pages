@@ -2,7 +2,7 @@ import { GeoDistributionResponse } from "../types/api.types";
 
 export async function fetchGeoDistribution(): Promise<GeoDistributionResponse> {
   try {
-    const response = await fetch("http://localhost:3002/geo-distribution");
+    const response = await fetch("https://scams-backend.vercel.app/geo-distribution");
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }

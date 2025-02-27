@@ -54,11 +54,19 @@ export function MonthlyTrends() {
             />
             <YAxis 
               stroke="#888"
-              tickFormatter={(value) => `₹${(value / 1000000000).toFixed(1)}B`}
+              tickFormatter={(value) => {
+                const inCrores = value / 10000000;
+                return `${inCrores.toFixed(0)}Cr`;
+              }}
+              tickCount={6}
+              domain={[0, 'auto']}
             />
             <Tooltip 
               contentStyle={{ backgroundColor: "#fff", border: "1px solid #f0f0f0" }}
-              formatter={(value: number) => [`₹${(value / 1000000000).toFixed(1)}B`, "Amount"]}
+              formatter={(value: number) => {
+                const inCrores = value / 10000000;
+                return [`₹${inCrores.toFixed(2)} Crores`, "Amount"];
+              }}
             />
             <Bar 
               dataKey="totalAmount" 

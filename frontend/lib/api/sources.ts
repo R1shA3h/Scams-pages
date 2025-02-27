@@ -1,8 +1,9 @@
 import { SourceItem, SourcesResponse } from "../types/api.types";
+import { endpoints } from "./config"
 
 export async function fetchSources(): Promise<{ data: SourceItem[] }> {
   try {
-    const response = await fetch("http://localhost:3002/sources");
+    const response = await fetch(endpoints.sources);
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
